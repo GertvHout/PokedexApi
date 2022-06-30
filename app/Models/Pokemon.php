@@ -12,4 +12,9 @@ class Pokemon extends Model
     protected $fillable = [
         'name'
     ];
+
+    protected $casts = [
+        'types' => 'array',
+        'sprites' => 'array'
+    ];
 }
