@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/v1/pokemons', [PokemonController::class, 'index']);
 
+Route::get('/v1/pokemons/{id}', [PokemonController::class, 'show']);
+
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

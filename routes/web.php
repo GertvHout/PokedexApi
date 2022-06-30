@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Resources\PokemonDetailsResource;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Http;
 use App\Models\Pokemon;
+use App\Models\PokemonDetails;
 use Illuminate\Support\Facades\File;
 
 
@@ -18,6 +20,7 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('/', function () {
-
-        return view('Index');
+        $id = 1;
+        $pokemon = PokemonDetails::find(1);
+        return view('Index', ["pokemon" => $pokemon]);
 });

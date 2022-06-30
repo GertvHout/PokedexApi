@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PokemonDetailsResource;
 use App\Http\Resources\PokemonResource;
 use App\Models\Pokemon;
+use App\Models\PokemonDetails;
 use Illuminate\Http\Request;
 
 class PokemonController extends Controller
@@ -16,7 +18,7 @@ class PokemonController extends Controller
      */
     public function index()
     {
-        $collection =PokemonResource::collection(Pokemon::all());
+        $collection = PokemonResource::collection(Pokemon::all());
         return $collection;
     }
 
@@ -39,7 +41,8 @@ class PokemonController extends Controller
      */
     public function show($id)
     {
-        //
+        $collection = new PokemonDetailsResource(PokemonDetails::find($id)); 
+        return $collection;
     }
 
     /**

@@ -8,6 +8,7 @@
 </head>
 <body>
     <main>
+        {{ $pokemon }}
     </main>
 </body>
 </html>
