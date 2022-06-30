@@ -5,7 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Pokemon;
+use App\Models\PokemonDetails;
 use Illuminate\Support\Facades\File;
+use App\Helpers\PokemonHelper;
 
 class PokemonSeeder extends Seeder
 {
@@ -16,34 +18,46 @@ class PokemonSeeder extends Seeder
      */
     public function run()
     {
+        
         Pokemon::truncate();
 
         $json = File::get('database/data/pokemons.json');
         $pokemons = json_decode($json);
 
-        foreach ($pokemons as $value){
-            
-            
-            $typesArray = $value->types;
-            $typesArrayNew = [];
-
-            //remove url field from type
-            foreach($typesArray as $typeArray){
-                $typeArray = json_decode(json_encode($typeArray), true);
-                $type = $typeArray['type'];
-                unset($type['url']);
-                $typeArray['type'] = $type ;
-                array_push($typesArrayNew, $typeArray);
-            }
-
-            //retrieve only the "front_default" sprite
-            $spritesArray = (object) ["front_default" => json_decode(json_encode($value->sprites), true)['front_default']];
+        foreach ($pokemons as $pokemon){
 
             Pokemon::create([
-                "name" => $value->name,
-                "sprites" => $spritesArray,
-                "types" => $typesArrayNew
+                "name" => $pokemon->name,
+                "sprites" => PokemonHelper::GetPokemonSprites($pokemon, ["front_default"]),
+                "types" => PokemonHelper::GetPokemonTypes($pokemon)
             ]);
+            
+            //populate pokemonDetails table
+            PokemonDetails::create([
+                "name" => $pokemon->name,
+                "sprites" => PokemonHelper::GetPokemonSprites($pokemon, [
+                    "front_default",
+                    "front_female",
+                    "front_shiny",
+                    "front_shiny_female",
+                    "back_default",
+                    "back_female",
+                    "back_shiny",
+                    "back_shiny_female",
+                
+                ]),
+                "types" => PokemonHelper::GetPokemonTypes($pokemon),
+                "height" => $pokemon->height,
+                "weight" => $pokemon->weight,
+                "moves" => PokemonHelper::GetPokemonMoves($pokemon),
+                "order" => $pokemon->order,
+                "species" => $pokemon->species->name,
+                "stats" => PokemonHelper::GetPokemonStats($pokemon),
+                "abilities" => PokemonHelper::GetPokemonAbilities($pokemon),
+                "form" => $pokemon->forms[0]->name,
+
+            ]); 
+
         }
     }
 }
