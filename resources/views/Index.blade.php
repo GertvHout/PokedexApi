@@ -8,7 +8,19 @@
 </head>
 <body>
     <main>
-        {{ $pokemon }}
+        {{$pokemon->name}}
+        @foreach ($pokemon->types as $type)
+        <b>
+            {{$type["type"]["name"]}}
+        </b>
+
+        @endforeach
+
+        @foreach ($pokemon->moves as $move)
+            @if ($move['version_group_details'][0]["move_learn_method"] === 'level-up' && $move['version_group_details'][0]["version_group"] === 'red-blue')
+                <p>move: {{$move['move']}}, learned at: {{$move['version_group_details'][0]["level_learned_at"]}}</p>
+            @endif
+        @endforeach
     </main>
 </body>
 </html>
