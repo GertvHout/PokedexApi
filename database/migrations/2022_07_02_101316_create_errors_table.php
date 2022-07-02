@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('errors', function (Blueprint $table) {
-            $table->string('error')->unique();
+            $table->string('error')->primary();
             $table->string('error_message');
         });
     }

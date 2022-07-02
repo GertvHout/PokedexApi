@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\TeamResource;
+use App\Models\Team;
 use Illuminate\Http\Request;
 
 class TeamController extends Controller
@@ -14,17 +16,8 @@ class TeamController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $collection = TeamResource::collection(Team::all());
+        return $collection;
     }
 
     /**
@@ -35,7 +28,11 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+/*         dump($request);
+ */        Team::create([
+            'name' => $request->name,
+            'pokemons' => $request->pokemons
+        ]);
     }
 
     /**
@@ -46,18 +43,7 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return Team::find($id);
     }
 
     /**
@@ -69,7 +55,9 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $team = Team::find($id);
+        $team->update($request->all());
+        return $team;
     }
 
     /**
@@ -80,6 +68,6 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return Team::destroy($id);
     }
 }

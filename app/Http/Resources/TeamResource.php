@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ErrorResource extends JsonResource
+class TeamResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,8 +15,8 @@ class ErrorResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'error' => $this->error,
-            'error_message' => $this->error_message
-        ];
-    }
+            'id' => $this->id,
+            'name' => $this->name,
+            'pokemons' => $this->pokemons,
+        ];    }
 }

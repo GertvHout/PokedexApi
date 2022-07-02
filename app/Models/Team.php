@@ -9,5 +9,10 @@ class Team extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'pokemons'
+    ];
+
     protected $casts = ['pokemons' => 'array'];
 }

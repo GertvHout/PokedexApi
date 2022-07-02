@@ -90,4 +90,14 @@ class PokemonHelper
 
         return $abilitiesArray;
     }
+
+    static function generatePokemonsArray($quantity){
+        $pokemons = [];
+
+        for ($i=0; $i < $quantity; $i++) { 
+            array_push($pokemons, random_int(1,151));
+        }
+
+        return $pokemons;
+    }
 }

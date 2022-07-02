@@ -8,6 +8,7 @@ use App\Models\Pokemon;
 use App\Models\PokemonDetails;
 use Illuminate\Support\Facades\File;
 use App\Helpers\PokemonHelper;
+use App\Models\Team;
 
 class PokemonSeeder extends Seeder
 {
@@ -58,6 +59,9 @@ class PokemonSeeder extends Seeder
 
             ]); 
 
+            
         }
+
+        Team::factory()->count(10)->create();
     }
 }
