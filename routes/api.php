@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/v1/pokemons', [PokemonController::class, 'index']);
 
-Route::get('/v1/pokemons/{id}', [PokemonController::class, 'show']); 
+Route::get('/v1/pokemons/{id}', [PokemonController::class, 'show']);
+
+Route::get('/v1/search', [PokemonController::class, 'search']); 
 
 Route::apiResource('/v1/teams',TeamController::class);
 

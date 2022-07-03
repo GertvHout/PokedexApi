@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TeamResource;
 use App\Models\Team;
+use Error;
 use Illuminate\Http\Request;
+use phpDocumentor\Reflection\Types\Resource_;
 
 class TeamController extends Controller
 {
@@ -28,11 +30,12 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-/*         dump($request);
- */        Team::create([
+        $team = Team::create([
             'name' => $request->name,
             'pokemons' => $request->pokemons
         ]);
+
+        return $team;
     }
 
     /**
@@ -43,7 +46,13 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        return Team::find($id);
+        $team = new TeamResource(Team::find($id));
+
+        if ($team == null) {
+            return "team not found";
+        }
+
+        return $team;
     }
 
     /**
@@ -55,8 +64,19 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $team = Team::find($id);
-        $team->update($request->all());
+        $team = new TeamResource(Team::find($id));
+
+        if ($team == null){
+            return 'team not found';
+        }
+
+        if (count($request->pokemons) > 6) {
+            return 'unable to add more then 6 pokemons to a team';
+        }
+
+        $team->update([
+            'pokemons' => $request->pokemons
+        ]);
         return $team;
     }
 
@@ -68,6 +88,14 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        return Team::destroy($id);
+        $team = new TeamResource(Team::find($id));
+
+        if ($team == null) {
+            return 'team not found'; 
+        }
+
+        Team::destroy($id);
+
+        return 'team ' . $id . ' deleted';
     }
 }
