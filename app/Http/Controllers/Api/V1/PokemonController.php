@@ -16,21 +16,45 @@ class PokemonController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $collection = PokemonResource::collection(Pokemon::all());
+        $sortQuery = $request->get('sort');
+        $allowedSortParams = ['name','id'];
+        $allowedSortValues = ['asc','desc'];
+
+        $sort = explode('-', $sortQuery);
+
+        if (in_array($sort[0], $allowedSortParams) && 
+            in_array($sort[1], $allowedSortValues)) 
+        {
+            $collection = PokemonResource::collection(Pokemon::orderBy($sort[0],$sort[1])->get());
+        }
+        else
+        {
+            $collection = PokemonResource::collection(Pokemon::all());
+        }
+        
         return $collection;
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display the pokemon with the type or name from the search parameter
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function search(Request $request)
     {
-        //
+        $query =  $request->get('query');
+        $limit = $request->get('limit');
+        
+        if ($query == null) {
+            return "no search query given";
+        }
+
+        $pokemons = PokemonResource::collection(Pokemon::whereJsonContains('types',[['type' => ['name' => $query]]])->orWhere('name', '=', $query)->limit($limit)->get());
+
+        return $pokemons;
     }
 
     /**
@@ -41,7 +65,9 @@ class PokemonController extends Controller
      */
     public function show($id)
     {
-        $collection = new PokemonDetailsResource(PokemonDetails::find($id)); 
+        $collection = new PokemonDetailsResource(PokemonDetails::find($id));
+        
+        
         return $collection;
     }
 
