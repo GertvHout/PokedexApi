@@ -9,6 +9,21 @@ class PokemonDetails extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "id",
+        "name",
+        "sprites",
+        "types",
+        "height",
+        "weight",
+        "moves",
+        "order",
+        "species",
+        "stats",
+        "abilities",
+        "form",
+    ];
+
     protected $casts = [
         'types' => 'array',
         'sprites' => 'array',
@@ -17,4 +32,6 @@ class PokemonDetails extends Model
         'abilities' => 'array'
 
     ];
+
+    public $incrementing = false;
 }

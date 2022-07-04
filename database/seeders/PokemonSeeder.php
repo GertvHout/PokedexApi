@@ -28,6 +28,7 @@ class PokemonSeeder extends Seeder
         foreach ($pokemons as $pokemon){
 
             Pokemon::create([
+                "id" => $pokemon->id,
                 "name" => $pokemon->name,
                 "sprites" => PokemonHelper::GetPokemonSprites($pokemon, ["front_default"]),
                 "types" => PokemonHelper::GetPokemonTypes($pokemon)
@@ -35,6 +36,7 @@ class PokemonSeeder extends Seeder
             
             //populate pokemonDetails table
             PokemonDetails::create([
+                "id" => $pokemon->id,
                 "name" => $pokemon->name,
                 "sprites" => PokemonHelper::GetPokemonSprites($pokemon, [
                     "front_default",

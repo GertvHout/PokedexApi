@@ -10,11 +10,17 @@ class Pokemon extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        "id",
+        "sprites",
+        "types"
+
     ];
 
     protected $casts = [
         'types' => 'array',
         'sprites' => 'array'
     ];
+
+    public $incrementing = false;
 }
